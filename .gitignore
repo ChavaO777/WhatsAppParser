@@ -1,4 +1,5 @@
-*/_cache
-*/_site
-*/.stack-work
-*/stack.yaml
+whatsapp-parser/_cache
+whatsapp-parser/_site
+whatsapp-parser/.stack-work
+whatsapp-parser/stack.yaml
+.DS_Store
