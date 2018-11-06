@@ -1,0 +1,14 @@
+1. Parse the WhatsApp chat text file and display the following information:
+
+    a. The date of the first message.
+    b. The total amount of messages.
+        b1. The amount of messages per chat member
+    c. The top 25 most common words (use larger fonts for more common words)
+    d. The hour of the day with the most messages
+    e. The day of the week with the most messages
+    f. The top 5 most common emojis
+    g. The longest message streak
+    h. The longest period without messages and its start date
+    i. The name of the person that usually starts the conversation
+
+2. Upload a WhatsApp chat text file and parse it immediately
