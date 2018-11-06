@@ -1,10 +1,10 @@
 # WhatsAppParser
 
-# Install dependencies:
+# Install dependencies
 
 stack install hakyll
 
-# Build the website:
+# Build the website
 
 - cd whatsapp-parser
 - stack init  # creates stack.yaml file based on whatsapp-parser.cabal
