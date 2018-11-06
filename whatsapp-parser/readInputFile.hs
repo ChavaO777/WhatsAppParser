@@ -3,8 +3,7 @@ import System.Environment
 
 main = do
     [fileName] <- getArgs
-    dat <- readFile fileName
-    putStrLn dat
-
-    handle <- openFile fileName ReadMode
-    hClose handle
+    fileContent <- readFile fileName
+    putStrLn fileContent
+    let lineCount = length (lines fileContent)
+    putStrLn ("Total messages: " ++ show lineCount)
