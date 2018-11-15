@@ -7,10 +7,6 @@
 # Unignore all dirs
 !*/
 
-whatsapp-parser/_cache
-whatsapp-parser/_site
-whatsapp-parser/.stack-work
-whatsapp-parser/stack.yaml
 .DS_Store
 *_chat.txt
 *.hi

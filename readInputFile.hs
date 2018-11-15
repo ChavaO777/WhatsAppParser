@@ -9,10 +9,8 @@ wordCount :: String -> [(String, Int)]
 wordCount = map (head &&& length) . group . sort . words . map toLower
 
 main = do
-    [fileName] <- getArgs
+    fileName <- getLine
     fileContent <- readFile fileName
     putStrLn fileContent
     let lineCount = length (lines fileContent)
     putStrLn ("Total messages: " ++ show lineCount)
-    let a = wordCount ((lines fileContent) !! 0)
-    putStrLn (show a)
