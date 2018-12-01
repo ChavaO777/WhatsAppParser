@@ -50,7 +50,9 @@ main = do
     let
         messages = lines fileContent
         parsedMessages = parseChat messages
+        totalMessageAmount = length parsedMessages
     -- putStrLn $ show (parsedMessages)
-    putStrLn "\n"
-    putStr "First message on "
+    putStr "Amount of messages: "
+    putStrLn $ show totalMessageAmount
+    putStr "First message on: "
     putStrLn $ show (getDateOfMessage (getMessageByIndex parsedMessages 0))
