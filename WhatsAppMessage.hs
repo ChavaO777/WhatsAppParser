@@ -38,6 +38,10 @@ getMessageDate (WhatsAppMessage timeStamp _ _) = timeStamp
 getMessageAuthor :: WhatsAppMessage -> String
 getMessageAuthor (WhatsAppMessage _ author _) = author
 
+extractMessageAuthors :: [WhatsAppMessage] -> [String]
+extractMessageAuthors [] = []
+extractMessageAuthors (w:ws) = [(getMessageAuthor w)] ++ (extractMessageAuthors ws)
+
 getMessageByIndex :: [WhatsAppMessage] -> Int -> WhatsAppMessage
 getMessageByIndex parsedMessages n = (parsedMessages !! n) 
 
@@ -45,6 +49,14 @@ parseChat :: [String] -> [WhatsAppMessage]
 parseChat lines = 
     let parsedLines = lines
     in map (parseMessage) parsedLines
+
+-- Function that deletes duplicates in a list
+removeListDuplicates :: (Ord a) => [a] -> [a]
+removeListDuplicates = map head . group . sort
+
+computeMessageCountPerAuthor :: [String] -> [WhatsAppMessage] -> [(String, Int)]
+computeMessageCountPerAuthor [a] parsedMessages = [(a, length (filter (\message -> getMessageAuthor message == a) parsedMessages))]
+computeMessageCountPerAuthor (a:as) parsedMessages = [(a, length (filter (\message -> getMessageAuthor message == a) parsedMessages))] ++ (computeMessageCountPerAuthor as parsedMessages)
 
 main :: IO()
 main = do
@@ -54,14 +66,20 @@ main = do
         messages = lines fileContent
         parsedMessages = parseChat messages
         totalMessageAmount = length parsedMessages
-        salvadorMessages = filter (\message -> getMessageAuthor message == "Salvador" ) parsedMessages
-        guillermoMessages = filter (\message -> getMessageAuthor message == "Guillermo Garduno Garcia" ) parsedMessages
+        messageAuthors = removeListDuplicates (extractMessageAuthors parsedMessages)
+        messagesPerAuthor = computeMessageCountPerAuthor messageAuthors parsedMessages
     putStrLn $ show (parsedMessages)
-    putStr "Amount of messages: "
-    putStrLn $ show totalMessageAmount
-    putStr "Amount of messages by Salvador: "
-    putStrLn $ show (length salvadorMessages)
-    putStr "Amount of messages by Guillermo Garduno Garcia: "
-    putStrLn $ show (length guillermoMessages)
-    putStr "First message on: "
+    putStr "\nFirst message on: "
     putStrLn $ show (getMessageDate (getMessageByIndex parsedMessages 0))
+    putStr "\nAmount of messages: "
+    putStrLn $ show totalMessageAmount
+    -- putStr "Amount of messages by Salvador: "
+    -- putStrLn $ show (length salvadorMessages)
+    -- putStr "Amount of messages by Guillermo Garduno Garcia: "
+    -- putStrLn $ show (length guillermoMessages)
+    
+    -- putStrLn $ show (extractMessageAuthors parsedMessages)
+    putStr "\nTotal chat participants: "
+    putStrLn $ show (length messageAuthors)
+    putStr "\nTotal messages per participant: \n\n"
+    mapM_ print messagesPerAuthor
