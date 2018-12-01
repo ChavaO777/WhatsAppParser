@@ -21,7 +21,7 @@ parseAuthor :: String -> String
 parseAuthor = takeWhile(/= ':') . drop 2 . dropWhile(/= ']')
 
 parseText :: String -> String
-parseText = takeWhile(/= ']') . takeWhile(/= ':')
+parseText = drop 2 . dropWhile(/= ':') . drop 2 . dropWhile(/= ']')
 
 parseMessage :: String -> WhatsAppMessage
 parseMessage message = WhatsAppMessage 
