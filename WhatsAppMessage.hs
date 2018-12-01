@@ -18,7 +18,7 @@ parseTimeStamp message =
 
 
 parseAuthor :: String -> String
-parseAuthor = takeWhile(/= ']')
+parseAuthor = takeWhile(/= ':') . drop 2 . dropWhile(/= ']')
 
 parseText :: String -> String
 parseText = takeWhile(/= ']') . takeWhile(/= ':')
