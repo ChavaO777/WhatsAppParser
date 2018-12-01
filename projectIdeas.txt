@@ -1,7 +1,7 @@
 1. Parse the WhatsApp chat text file and display the following information:
 
-    a. The date of the first message.
-    b. The total amount of messages.
+    a. The date of the first message.                                           DONE
+    b. The total amount of messages.                                            DONE
         b1. The amount of messages per chat member
     c. The top 25 most common words (use larger fonts for more common words)
     d. The hour of the day with the most messages

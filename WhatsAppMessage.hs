@@ -32,8 +32,11 @@ parseMessage message = WhatsAppMessage
         text = parseText message
     }
 
-getDateOfMessage :: WhatsAppMessage -> LocalTime
-getDateOfMessage (WhatsAppMessage timeStamp _ _) = timeStamp
+getMessageDate :: WhatsAppMessage -> LocalTime
+getMessageDate (WhatsAppMessage timeStamp _ _) = timeStamp
+
+getMessageAuthor :: WhatsAppMessage -> String
+getMessageAuthor (WhatsAppMessage _ author _) = author
 
 getMessageByIndex :: [WhatsAppMessage] -> Int -> WhatsAppMessage
 getMessageByIndex parsedMessages n = (parsedMessages !! n) 
@@ -51,8 +54,14 @@ main = do
         messages = lines fileContent
         parsedMessages = parseChat messages
         totalMessageAmount = length parsedMessages
-    -- putStrLn $ show (parsedMessages)
+        salvadorMessages = filter (\message -> getMessageAuthor message == "Salvador" ) parsedMessages
+        guillermoMessages = filter (\message -> getMessageAuthor message == "Guillermo Garduno Garcia" ) parsedMessages
+    putStrLn $ show (parsedMessages)
     putStr "Amount of messages: "
     putStrLn $ show totalMessageAmount
+    putStr "Amount of messages by Salvador: "
+    putStrLn $ show (length salvadorMessages)
+    putStr "Amount of messages by Guillermo Garduno Garcia: "
+    putStrLn $ show (length guillermoMessages)
     putStr "First message on: "
-    putStrLn $ show (getDateOfMessage (getMessageByIndex parsedMessages 0))
+    putStrLn $ show (getMessageDate (getMessageByIndex parsedMessages 0))
