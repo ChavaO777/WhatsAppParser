@@ -2,6 +2,7 @@ import System.Environment
 import Data.Time
 import Data.List
 
+-- Data type of a WhatsApp message
 data WhatsAppMessage = WhatsAppMessage
     {
         timeStamp :: LocalTime,
@@ -9,6 +10,7 @@ data WhatsAppMessage = WhatsAppMessage
         text :: String
     } deriving (Show)
 
+-- Function that parses the timestamp of a message given its string
 parseTimeStamp :: String -> LocalTime
 parseTimeStamp message = 
     let
@@ -18,12 +20,15 @@ parseTimeStamp message =
         parseTimeOrError True defaultTimeLocale timeFormatString (drop 1 timeString) :: LocalTime
 
 
+-- Function that parses the author of a WhatsApp message given its string
 parseAuthor :: String -> String
 parseAuthor = takeWhile(/= ':') . drop 2 . dropWhile(/= ']')
 
+-- Function that parses the text of a WhatsApp message given its string
 parseText :: String -> String
 parseText = takeWhile(/= '[') . drop 2 . dropWhile(/= ':') . drop 2 . dropWhile(/= ']')
 
+-- Function that parses a WhatsApp message given its string
 parseMessage :: String -> WhatsAppMessage
 parseMessage message = WhatsAppMessage 
     {
@@ -68,21 +73,33 @@ computeMessageCountPerAuthor (a:as) parsedMessages = [(a, length (filter (\messa
 main :: IO()
 main = do
     args <- getArgs
+    -- Read the input file: _chat.txt
     fileContent <- readFile (head args)
     let
+        -- Extract the lines of the file
         messages = lines fileContent
+        -- Parse the messages
         parsedMessages = parseChat messages
+        -- Compute the total amount of messages
         totalMessageAmount = length parsedMessages
+        -- Get the list of message authors (i.e. participants in the chat)
         messageAuthors = removeListDuplicates (extractMessageAuthors parsedMessages)
+        -- Get the list of tuples <author, message count>
         messagesPerAuthor = computeMessageCountPerAuthor messageAuthors parsedMessages
+    -- Print the total set of messages
     putStrLn $ show (parsedMessages)
+    -- Print the timestamp of the first message
     putStr "\nFirst message on: "
     putStrLn $ show (getMessageTimeStamp (getMessageByIndex parsedMessages 0))
+    -- Print the timestamp of the last message
     putStr "\nLast message on: "
     putStrLn $ show (getMessageTimeStamp (getMessageByIndex parsedMessages ((length parsedMessages) - 1)))
+    -- Print the total amount of messages
     putStr "\nAmount of messages: "
     putStrLn $ show totalMessageAmount
+    -- Print the total amount of chat participants
     putStr "\nTotal chat participants: "
     putStrLn $ show (length messageAuthors)
+    -- Print the total amount of messages per participant
     putStr "\nTotal messages per participant: \n\n"
     mapM_ print messagesPerAuthor
