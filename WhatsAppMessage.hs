@@ -109,6 +109,12 @@ getWeekDay weekDayNumber
     | (weekDayNumber == 6) = "Saturday"
     | otherwise = "Sunday"
 
+getMessageWeekDay :: WhatsAppMessage -> String
+getMessageWeekDay message = getWeekDay weekDayNumber
+    where
+        (year, month, day) = toGregorian $ (localDay (getMessageTimeStamp message))
+        (_, _, weekDayNumber) = toWeekDate $ fromGregorian year month day
+
 main :: IO()
 main = do
     args <- getArgs
@@ -126,7 +132,7 @@ main = do
         -- Get the list of tuples <author, message count>
         messagesPerAuthor = computeMessageCountPerAuthor messageAuthors parsedMessages
         -- Get the list of all words in all messages
-        commonWords = ["mas", "f", "ok", "pues", "oye", "mas", "nada", "este", "pero", "sale", "asi", "que", "de", "y", "el", "si", "la", "no", "es", "ya", "me", "a", "para", "lo", "un", "una", "unos", "unas", "eso", "por", "algo", "se", "esta", "esa", "esto", "eso", "estas", "esas", "estos", "esos", "en", "como", "o", "las", "le", "los", "al", "te", "ese", "con", "del", "tu", "yo", "tan", "hay"]
+        commonWords = ["entonces", "mas", "f", "ok", "pues", "oye", "mas", "nada", "este", "pero", "sale", "asi", "que", "de", "y", "el", "si", "la", "no", "es", "ya", "me", "a", "para", "lo", "un", "una", "unos", "unas", "eso", "por", "algo", "se", "esta", "esa", "esto", "eso", "estas", "esas", "estos", "esos", "en", "como", "o", "las", "le", "los", "al", "te", "ese", "con", "del", "tu", "yo", "tan", "hay"]
         wordsInChat = removeCommonWords (cleanWords (computeWordsInChat parsedMessages)) commonWords
         topWordsLimit = 25
     -- Print the total set of messages
@@ -157,13 +163,16 @@ main = do
     putStr " words in the chat:\n"
     putStr $ show (take topWordsLimit (sortBySecondElementInTuple (removeListDuplicates (computeWordCount wordsInChat wordsInChat))))
     putStrLn "\n"
-    timezone <- getCurrentTimeZone
-    putStrLn "\n\n"
-    now <- getCurrentTime
-    let zoneNow = utcToLocalTime timezone now
-    let (year, month, day) = toGregorian $ localDay zoneNow
-    let (_, _, wday) = toWeekDate $ fromGregorian year month day
-    putStrLn $ "Year: " ++ show year
-    putStrLn $ "Month: " ++ show month
-    putStrLn $ "Day: " ++ show day
-    putStrLn $ "Weekday: " ++ (getWeekDay wday)
+    -- timezone <- getCurrentTimeZone
+    -- putStrLn "\n\n"
+    -- now <- getCurrentTime
+    -- let zoneNow = utcToLocalTime timezone now
+    -- let (year, month, day) = toGregorian $ localDay zoneNow
+    -- let (_, _, wday) = toWeekDate $ fromGregorian year month day
+    -- putStrLn $ "Year: " ++ show year
+    -- putStrLn $ "Month: " ++ show month
+    -- putStrLn $ "Day: " ++ show day
+    -- putStrLn $ "Weekday: " ++ (getWeekDay wday)
+    -- putStrLn "\n\n"
+    -- putStrLn $ "Weekday: " ++ show (getMessageByIndex parsedMessages 150)
+    -- putStrLn $ "Weekday: " ++ getMessageWeekDay (getMessageByIndex parsedMessages 150)
