@@ -3,7 +3,7 @@
     a. The date of the first message.                                           DONE
     b. The total amount of messages.                                            DONE
         b1. The amount of messages per chat member                              DONE
-    c. The top 25 most common words (use larger fonts for more common words)
+    c. The top 25 most common words (use larger fonts for more common words)    DONE
     d. The hour of the day with the most messages
     e. The day of the week with the most messages
     f. The top 5 most common emojis

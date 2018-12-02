@@ -1,6 +1,13 @@
 import System.Environment
 import Data.Time
 import Data.List
+import Data.List.Split (splitOn)
+import Data.Char
+import Data.List (sortBy)
+import Data.Function (on)
+import Data.Time (fromGregorian)
+ 
+import Data.Time.Calendar.WeekDate (toWeekDate)
 
 -- Data type of a WhatsApp message
 data WhatsAppMessage = WhatsAppMessage
@@ -41,6 +48,10 @@ parseMessage message = WhatsAppMessage
 getMessageTimeStamp :: WhatsAppMessage -> LocalTime
 getMessageTimeStamp (WhatsAppMessage timeStamp _ _) = timeStamp
 
+-- Function that extracts the text of a given message
+getMessageText :: WhatsAppMessage -> String
+getMessageText (WhatsAppMessage _ _ text) = text
+
 -- Function that extract the author of a given message
 getMessageAuthor :: WhatsAppMessage -> String
 getMessageAuthor (WhatsAppMessage _ author _) = author
@@ -70,6 +81,34 @@ computeMessageCountPerAuthor :: [String] -> [WhatsAppMessage] -> [(String, Int)]
 computeMessageCountPerAuthor [a] parsedMessages = [(a, length (filter (\message -> getMessageAuthor message == a) parsedMessages))]
 computeMessageCountPerAuthor (a:as) parsedMessages = [(a, length (filter (\message -> getMessageAuthor message == a) parsedMessages))] ++ (computeMessageCountPerAuthor as parsedMessages)
 
+computeWordsInChat :: [WhatsAppMessage] -> [String]
+computeWordsInChat [w] = splitOn " " (getMessageText w)
+computeWordsInChat (w:ws) = (splitOn " " (getMessageText w)) ++ (computeWordsInChat ws)
+
+computeWordCount :: [String] -> [String] -> [(String, Int)]
+computeWordCount [w] wordsList = [(w, length (filter (\word -> word == w) wordsList))]
+computeWordCount (w:ws) wordsList = [(w, length (filter (\word -> word == w) wordsList))] ++ computeWordCount ws wordsList
+
+toLowerStr xs = map toLower xs
+dropNonLetters xs = words $ (filter (\x -> x `elem` (' ':['a'..'z']))) $ toLowerStr xs
+
+cleanWords :: [String] -> [String]
+cleanWords [w] = dropNonLetters w
+cleanWords (w:ws) = (dropNonLetters w) ++ (cleanWords ws)
+
+removeCommonWords :: [String] -> [String] -> [String]
+removeCommonWords words commonWords = filter (`notElem` commonWords) words
+
+getWeekDay :: Int -> String
+getWeekDay weekDayNumber 
+    | (weekDayNumber == 1) = "Monday"
+    | (weekDayNumber == 2) = "Tuesday"
+    | (weekDayNumber == 3) = "Wednesday"
+    | (weekDayNumber == 4) = "Thursday"
+    | (weekDayNumber == 5) = "Friday"
+    | (weekDayNumber == 6) = "Saturday"
+    | otherwise = "Sunday"
+
 main :: IO()
 main = do
     args <- getArgs
@@ -86,8 +125,12 @@ main = do
         messageAuthors = removeListDuplicates (extractMessageAuthors parsedMessages)
         -- Get the list of tuples <author, message count>
         messagesPerAuthor = computeMessageCountPerAuthor messageAuthors parsedMessages
+        -- Get the list of all words in all messages
+        commonWords = ["mas", "f", "ok", "pues", "oye", "mas", "nada", "este", "pero", "sale", "asi", "que", "de", "y", "el", "si", "la", "no", "es", "ya", "me", "a", "para", "lo", "un", "una", "unos", "unas", "eso", "por", "algo", "se", "esta", "esa", "esto", "eso", "estas", "esas", "estos", "esos", "en", "como", "o", "las", "le", "los", "al", "te", "ese", "con", "del", "tu", "yo", "tan", "hay"]
+        wordsInChat = removeCommonWords (cleanWords (computeWordsInChat parsedMessages)) commonWords
+        topWordsLimit = 25
     -- Print the total set of messages
-    putStrLn $ show (parsedMessages)
+    -- putStrLn $ show (parsedMessages)
     -- Print the timestamp of the first message
     putStr "\nFirst message on: "
     putStrLn $ show (getMessageTimeStamp (getMessageByIndex parsedMessages 0))
@@ -103,3 +146,24 @@ main = do
     -- Print the total amount of messages per participant
     putStr "\nTotal messages per participant: \n\n"
     mapM_ print messagesPerAuthor
+    -- Print the total words in the chat.
+    -- putStrLn $ show wordsInChat
+    -- Print the word count in the chat.
+    -- putStrLn $ show wordsInChat
+    -- Function to sort by the second element in a tuple
+    let sortBySecondElementInTuple = sortBy (flip compare `on` snd)
+    putStr "\nTop "
+    putStr $ show(topWordsLimit)
+    putStr " words in the chat:\n"
+    putStr $ show (take topWordsLimit (sortBySecondElementInTuple (removeListDuplicates (computeWordCount wordsInChat wordsInChat))))
+    putStrLn "\n"
+    timezone <- getCurrentTimeZone
+    putStrLn "\n\n"
+    now <- getCurrentTime
+    let zoneNow = utcToLocalTime timezone now
+    let (year, month, day) = toGregorian $ localDay zoneNow
+    let (_, _, wday) = toWeekDate $ fromGregorian year month day
+    putStrLn $ "Year: " ++ show year
+    putStrLn $ "Month: " ++ show month
+    putStrLn $ "Day: " ++ show day
+    putStrLn $ "Weekday: " ++ (getWeekDay wday)
