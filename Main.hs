@@ -70,7 +70,7 @@ main = do
     putStr "\nTop "
     putStr $ show(topWordsLimit)
     putStr " words in the chat (excluding common words without an important meaning in the analysis):\n\n"
-    putStr $ show (take topWordsLimit (sortBySecondElementInTuple (removeListDuplicates (computeWordCount wordsInChat wordsInChat))))
+    putStr $ show (take topWordsLimit (sortBySecondElementInTuple (computeWordCount (removeListDuplicates wordsInChat) wordsInChat)))
     putStrLn "\n"
     -- Print the amount of messages sent per day of the week
     putStr "\nDistribution of sent messages per day of the week (in decreasing order):\n"
