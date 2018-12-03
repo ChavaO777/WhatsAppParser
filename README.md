@@ -18,7 +18,7 @@ The parser assumes that every message has the following structure:
     [%-m/%-d/%y, %-H:%M:%S %p] MESSAGE_AUTHOR: MESSAGE_TEXT
 ```
 
-This, however, does not seem to be true across all platforms supported by WhatsApp. For the moment, the parser **WILL NOT** work if the message structure is different from the one presented above. The parser is also skipping multine messages for now. In the future, both a flexible timestamp format and multiline messages should be supported.
+This, however, does not seem to be true across all platforms supported by WhatsApp. For the moment, the parser **WILL NOT WORK** if the message structure is different from the one presented above. The parser is also skipping multine messages for now. In the future, both a flexible timestamp format and multiline messages should be supported.
 
 ## Commands for compiling and executing
 
