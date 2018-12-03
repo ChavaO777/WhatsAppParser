@@ -20,6 +20,13 @@ removeListDuplicates = map head . group . sort
 toLowerStr xs = map toLower xs
 dropNonLetters xs = words $ (filter (\x -> x `elem` (' ':['a'..'z']))) $ toLowerStr xs
 
+-- deleteTildesInString :: String -> String
+-- deleteTildesInString str = 
+-- let 
+--     repl 'a' = 'x'
+--     repl  c   = c
+-- in  map repl str
+
 cleanWords :: [String] -> [String]
 cleanWords [w] = dropNonLetters w
 cleanWords (w:ws) = (dropNonLetters w) ++ (cleanWords ws)

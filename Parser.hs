@@ -37,6 +37,28 @@ parseMessage message = WhatsAppMessage
         text = parseText message
     }
 
+-- Function that removes lines that do not start with '[' in the chat file
+-- (Multiline messages are not yet supported in the parsing.) 
+filterGoodLines :: [String] -> [String]
+filterGoodLines lines = filter (\line -> head line == '[') lines
+
+-- Function that replaces foreign characters in a string with regular 
+-- characters of the English alphabet
+removeForeignCharactersInString :: String -> String
+removeForeignCharactersInString str = 
+    let 
+        repl 'á' = 'a'
+        repl 'é' = 'e'
+        repl 'í' = 'i'
+        repl 'ó' = 'o'
+        repl 'ú' = 'u'
+        repl 'ü' = 'u'
+        repl 'ñ' = 'n'
+        -- All other characters are fine, i.e. they're replaced
+        -- by themselves
+        repl c = c
+    in  map repl str
+
 -- Function that extracts the date of a given message
 getMessageTimeStamp :: WhatsAppMessage -> LocalTime
 getMessageTimeStamp (WhatsAppMessage timeStamp _ _) = timeStamp
@@ -62,5 +84,5 @@ getMessageByIndex parsedMessages n = (parsedMessages !! n)
 -- Function that parses the whole chat
 parseChat :: [String] -> [WhatsAppMessage]
 parseChat lines = 
-    let parsedLines = lines
+    let parsedLines = map removeForeignCharactersInString (filterGoodLines lines)
     in map (parseMessage) parsedLines

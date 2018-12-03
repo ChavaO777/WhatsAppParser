@@ -5,6 +5,7 @@
     - The chat length                                                           DONE
     - The total amount of messages.                                             DONE
         - The amount of messages per chat member                                DONE
+    - Average amount of messages per day                                        DONE
     - The top 25 most common words (use larger fonts for more common words)     DONE
     - The hour of the day with the most messages
     - The day of the week with the most messages                                DONE
