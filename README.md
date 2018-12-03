@@ -1,7 +1,4 @@
 # WhatsAppParser
 
-$ cabal install missingh
-$ cabal install split
-$ cabal configure
-$ cabal build
-$ cabal install
+$ stack ghc WhatsAppParser.hs WhatsAppMessage.hs
+$ ./WhatsAppParser testcases/_chat_1.txt

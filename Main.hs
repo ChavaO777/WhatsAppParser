@@ -9,85 +9,26 @@ import Data.Time (fromGregorian)
  
 import Data.Time.Calendar.WeekDate (toWeekDate)
 
--- Data type of a WhatsApp message
-data WhatsAppMessage = WhatsAppMessage
-    {
-        timeStamp :: LocalTime,
-        author :: String,
-        text :: String
-    } deriving (Show)
-
--- Function that parses the timestamp of a message given its string
-parseTimeStamp :: String -> LocalTime
-parseTimeStamp message = 
-    let
-        timeString = takeWhile(/= ']') message
-        timeFormatString = "%-m/%-d/%y, %-H:%M:%S %p"
-    in
-        parseTimeOrError True defaultTimeLocale timeFormatString (drop 1 timeString) :: LocalTime
-
-
--- Function that parses the author of a WhatsApp message given its string
-parseAuthor :: String -> String
-parseAuthor = takeWhile(/= ':') . drop 2 . dropWhile(/= ']')
-
--- Function that parses the text of a WhatsApp message given its string
-parseText :: String -> String
-parseText = takeWhile(/= '[') . drop 2 . dropWhile(/= ':') . drop 2 . dropWhile(/= ']')
-
--- Function that parses a WhatsApp message given its string
-parseMessage :: String -> WhatsAppMessage
-parseMessage message = WhatsAppMessage 
-    {
-        timeStamp = parseTimeStamp message,
-        author = parseAuthor message,
-        text = parseText message
-    }
-
--- Function that extracts the date of a given message
-getMessageTimeStamp :: WhatsAppMessage -> LocalTime
-getMessageTimeStamp (WhatsAppMessage timeStamp _ _) = timeStamp
-
--- Function that extracts the text of a given message
-getMessageText :: WhatsAppMessage -> String
-getMessageText (WhatsAppMessage _ _ text) = text
-
--- Function that extract the author of a given message
-getMessageAuthor :: WhatsAppMessage -> String
-getMessageAuthor (WhatsAppMessage _ author _) = author
-
--- Function that extracts the author of each message and returns a 
--- list of authors per message
-extractMessageAuthors :: [WhatsAppMessage] -> [String]
-extractMessageAuthors [] = []
-extractMessageAuthors (w:ws) = [(getMessageAuthor w)] ++ (extractMessageAuthors ws)
-
--- Function that retrieves a message given its index
-getMessageByIndex :: [WhatsAppMessage] -> Int -> WhatsAppMessage
-getMessageByIndex parsedMessages n = (parsedMessages !! n) 
-
--- Function that parses the whole chat
-parseChat :: [String] -> [WhatsAppMessage]
-parseChat lines = 
-    let parsedLines = lines
-    in map (parseMessage) parsedLines
+import WhatsAppMessage
+import Parser
+import Statistics
 
 -- Function that deletes duplicates in a list
 removeListDuplicates :: (Ord a) => [a] -> [a]
 removeListDuplicates = map head . group . sort
 
--- Function that computes the amount of messages per author
-computeMessageCountPerAuthor :: [String] -> [WhatsAppMessage] -> [(String, Int)]
-computeMessageCountPerAuthor [a] parsedMessages = [(a, length (filter (\message -> getMessageAuthor message == a) parsedMessages))]
-computeMessageCountPerAuthor (a:as) parsedMessages = [(a, length (filter (\message -> getMessageAuthor message == a) parsedMessages))] ++ (computeMessageCountPerAuthor as parsedMessages)
+-- -- Function that computes the amount of messages per author
+-- computeMessageCountPerAuthor :: [String] -> [WhatsAppMessage] -> [(String, Int)]
+-- computeMessageCountPerAuthor [a] parsedMessages = [(a, length (filter (\message -> getMessageAuthor message == a) parsedMessages))]
+-- computeMessageCountPerAuthor (a:as) parsedMessages = [(a, length (filter (\message -> getMessageAuthor message == a) parsedMessages))] ++ (computeMessageCountPerAuthor as parsedMessages)
 
-computeWordsInChat :: [WhatsAppMessage] -> [String]
-computeWordsInChat [w] = splitOn " " (getMessageText w)
-computeWordsInChat (w:ws) = (splitOn " " (getMessageText w)) ++ (computeWordsInChat ws)
+-- computeWordsInChat :: [WhatsAppMessage] -> [String]
+-- computeWordsInChat [w] = splitOn " " (getMessageText w)
+-- computeWordsInChat (w:ws) = (splitOn " " (getMessageText w)) ++ (computeWordsInChat ws)
 
-computeWordCount :: [String] -> [String] -> [(String, Int)]
-computeWordCount [w] wordsList = [(w, length (filter (\word -> word == w) wordsList))]
-computeWordCount (w:ws) wordsList = [(w, length (filter (\word -> word == w) wordsList))] ++ computeWordCount ws wordsList
+-- computeWordCount :: [String] -> [String] -> [(String, Int)]
+-- computeWordCount [w] wordsList = [(w, length (filter (\word -> word == w) wordsList))]
+-- computeWordCount (w:ws) wordsList = [(w, length (filter (\word -> word == w) wordsList))] ++ computeWordCount ws wordsList
 
 toLowerStr xs = map toLower xs
 dropNonLetters xs = words $ (filter (\x -> x `elem` (' ':['a'..'z']))) $ toLowerStr xs
