@@ -1,6 +1,8 @@
 # WhatsAppParser
 
-Parser of a "_chat.txt" file exported from a WhatsApp conversation. Have you ever wanted to know some facts from a chat? WhatsAppParser is for you!
+## Have you ever wanted to know some facts from a chat? WhatsAppParser is for you!
+
+Parser of a "_chat.txt" file exported from a WhatsApp chat.
 
 ## Dependencies
 
