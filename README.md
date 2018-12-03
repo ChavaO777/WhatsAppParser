@@ -23,6 +23,6 @@ $ ./Main path/to/input/file.txt
 | Hour of the day with the most messages                                | [ ]           |
 | Day of the week with the most messages                                | [x]           |
 | Top 5 most common emojis                                              | [ ]           |
-| Size of the longest message streak                                    | [ ]           |
+| Length of the longest message streak                                  | [ ]           |
 | Longest period without messages and its start date                    | [ ]           |
 | Name of the person who usually starts the conversation                | [ ]           |
