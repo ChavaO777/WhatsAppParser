@@ -43,6 +43,11 @@ $ ./Main path/to/input/file.txt
 
 ```
     [%-m/%-d/%y, %-H:%M:%S %p] MESSAGE_AUTHOR: MESSAGE_TEXT
+````
+E.g.
+
+```
+    [9/3/18, 8:04:35 PM] John Doe: Hello! Good morning.
 ```
 
 This, however, does not seem to be true across all platforms supported by WhatsApp. For the moment, the parser **WILL NOT WORK** if the message structure is different from the one presented above.
