@@ -44,6 +44,9 @@ main = do
     -- Print the timestamp of the last message
     putStr "\nLast message on: "
     putStrLn $ show (getMessageTimeStamp (getMessageByIndex parsedMessages ((length parsedMessages) - 1)))
+    -- Print the amount of days the chat has been going on
+    putStr "\nChat length (in days): "
+    putStrLn $ show (getChatLength parsedMessages)
     -- Print the total amount of messages
     putStr "\nAmount of messages: "
     putStrLn $ show totalMessageAmount

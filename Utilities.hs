@@ -45,3 +45,11 @@ getMessageWeekDay message = getWeekDay weekDayNumber
     where
         (year, month, day) = toGregorian $ (localDay (getMessageTimeStamp message))
         (_, _, weekDayNumber) = toWeekDate $ fromGregorian year month day
+
+getChatLength :: [WhatsAppMessage] -> Integer
+getChatLength parsedMessages = diffDays lastChatDay firstChatDay
+    where
+        firstChatMessage = getMessageByIndex parsedMessages 0
+        lastChatMessage = getMessageByIndex parsedMessages ((length parsedMessages) - 1)
+        firstChatDay = localDay (getMessageTimeStamp firstChatMessage)
+        lastChatDay = localDay (getMessageTimeStamp lastChatMessage)
