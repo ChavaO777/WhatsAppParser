@@ -20,6 +20,7 @@ main = do
     -- Read the input file. E.g. "_chat.txt"
     fileContent <- readFile (head args)
     let
+        sortBySecondElementInTuple = sortBy (flip compare `on` snd)
         -- Extract the lines of the file
         messages = lines fileContent
         -- Parse the messages
@@ -30,6 +31,8 @@ main = do
         messageAuthors = removeListDuplicates (extractMessageAuthors parsedMessages)
         -- Get the list of tuples <author, message count>
         messagesPerAuthor = computeMessageCountPerAuthor messageAuthors parsedMessages
+        -- Get the list of tuples <day of the week, message count>
+        messagesPerDay = computeMessageCountPerDay getWeekDaysList parsedMessages
         -- Get the list of all words in all messages
         commonWords = ["entonces", "mas", "f", "ok", "pues", "oye", "mas", "nada", "este", "pero", "sale", "asi", "que", "de", "y", "el", "si", "la", "no", "es", "ya", "me", "a", "para", "lo", "un", "una", "unos", "unas", "eso", "por", "algo", "se", "esta", "esa", "esto", "eso", "estas", "esas", "estos", "esos", "en", "como", "o", "las", "le", "los", "al", "te", "ese", "con", "del", "tu", "yo", "tan", "hay"]
         wordsInChat = removeCommonWords (cleanWords (computeWordsInChat parsedMessages)) commonWords
@@ -51,12 +54,13 @@ main = do
     putStr "\nTotal messages per participant: \n\n"
     mapM_ print messagesPerAuthor
     -- Print the word count in the chat.
-    putStr "Total words in the chat: "
+    putStr "\nTotal words in the chat: "
     putStrLn $ show (length wordsInChat)
     -- Function to sort by the second element in a tuple
-    let sortBySecondElementInTuple = sortBy (flip compare `on` snd)
     putStr "\nTop "
     putStr $ show(topWordsLimit)
     putStr " words in the chat:\n"
     putStr $ show (take topWordsLimit (sortBySecondElementInTuple (removeListDuplicates (computeWordCount wordsInChat wordsInChat))))
     putStrLn "\n"
+    putStr "\nDistribution of sent messages per day of the week (in decreasing order):\n"
+    mapM_ print (sortBySecondElementInTuple messagesPerDay)

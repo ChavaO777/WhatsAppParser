@@ -5,7 +5,7 @@
         b1. The amount of messages per chat member                              DONE
     c. The top 25 most common words (use larger fonts for more common words)    DONE
     d. The hour of the day with the most messages
-    e. The day of the week with the most messages
+    e. The day of the week with the most messages                               DONE
     f. The top 5 most common emojis
     g. The longest message streak
     h. The longest period without messages and its start date

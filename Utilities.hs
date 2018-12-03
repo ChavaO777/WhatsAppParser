@@ -12,7 +12,6 @@ import Data.Time.Calendar.WeekDate (toWeekDate)
 
 import WhatsAppMessage
 import Parser
-import Statistics
 
 -- Function that deletes duplicates in a list
 removeListDuplicates :: (Ord a) => [a] -> [a]
@@ -37,6 +36,9 @@ getWeekDay weekDayNumber
     | (weekDayNumber == 5) = "Friday"
     | (weekDayNumber == 6) = "Saturday"
     | otherwise = "Sunday"
+
+getWeekDaysList :: [String]
+getWeekDaysList = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 
 getMessageWeekDay :: WhatsAppMessage -> String
 getMessageWeekDay message = getWeekDay weekDayNumber
