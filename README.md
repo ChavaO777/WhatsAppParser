@@ -15,7 +15,7 @@ $ ./Main path/to/input/file.txt
 | ----------------------------------------------------------------------|---------------|
 | Date of the first message                                             | [x]           |
 | Date of the last message                                              | [x]           |
-| Chat length                                                           | [x]           |
+| Chat length in days                                                   | [x]           |
 | Total amount of messages.                                             | [x]           |
 | Amount of messages per chat member                                    | [x]           |
 | Average amount of messages per day                                    | [x]           |
