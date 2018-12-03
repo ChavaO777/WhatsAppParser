@@ -118,7 +118,7 @@ getMessageWeekDay message = getWeekDay weekDayNumber
 main :: IO()
 main = do
     args <- getArgs
-    -- Read the input file: _chat.txt
+    -- Read the input file. E.g. "_chat.txt"
     fileContent <- readFile (head args)
     let
         -- Extract the lines of the file
@@ -135,8 +135,7 @@ main = do
         commonWords = ["entonces", "mas", "f", "ok", "pues", "oye", "mas", "nada", "este", "pero", "sale", "asi", "que", "de", "y", "el", "si", "la", "no", "es", "ya", "me", "a", "para", "lo", "un", "una", "unos", "unas", "eso", "por", "algo", "se", "esta", "esa", "esto", "eso", "estas", "esas", "estos", "esos", "en", "como", "o", "las", "le", "los", "al", "te", "ese", "con", "del", "tu", "yo", "tan", "hay"]
         wordsInChat = removeCommonWords (cleanWords (computeWordsInChat parsedMessages)) commonWords
         topWordsLimit = 25
-    -- Print the total set of messages
-    -- putStrLn $ show (parsedMessages)
+        
     -- Print the timestamp of the first message
     putStr "\nFirst message on: "
     putStrLn $ show (getMessageTimeStamp (getMessageByIndex parsedMessages 0))
@@ -152,10 +151,9 @@ main = do
     -- Print the total amount of messages per participant
     putStr "\nTotal messages per participant: \n\n"
     mapM_ print messagesPerAuthor
-    -- Print the total words in the chat.
-    -- putStrLn $ show wordsInChat
     -- Print the word count in the chat.
-    -- putStrLn $ show wordsInChat
+    putStr "Total words in the chat: "
+    putStrLn $ show (length wordsInChat)
     -- Function to sort by the second element in a tuple
     let sortBySecondElementInTuple = sortBy (flip compare `on` snd)
     putStr "\nTop "
@@ -163,16 +161,3 @@ main = do
     putStr " words in the chat:\n"
     putStr $ show (take topWordsLimit (sortBySecondElementInTuple (removeListDuplicates (computeWordCount wordsInChat wordsInChat))))
     putStrLn "\n"
-    -- timezone <- getCurrentTimeZone
-    -- putStrLn "\n\n"
-    -- now <- getCurrentTime
-    -- let zoneNow = utcToLocalTime timezone now
-    -- let (year, month, day) = toGregorian $ localDay zoneNow
-    -- let (_, _, wday) = toWeekDate $ fromGregorian year month day
-    -- putStrLn $ "Year: " ++ show year
-    -- putStrLn $ "Month: " ++ show month
-    -- putStrLn $ "Day: " ++ show day
-    -- putStrLn $ "Weekday: " ++ (getWeekDay wday)
-    -- putStrLn "\n\n"
-    -- putStrLn $ "Weekday: " ++ show (getMessageByIndex parsedMessages 150)
-    -- putStrLn $ "Weekday: " ++ getMessageWeekDay (getMessageByIndex parsedMessages 150)

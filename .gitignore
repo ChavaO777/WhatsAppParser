@@ -8,7 +8,7 @@
 !*/
 
 .DS_Store
-*_chat.txt
+*_chat_*.txt
 *.hi
 *.o
 *.out
