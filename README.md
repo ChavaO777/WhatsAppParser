@@ -4,8 +4,8 @@ Parser of a "_chat.txt" file exported from a WhatsApp conversation. Have you eve
 
 ## Dependencies
 
-- First, [install Cabal](https://www.haskell.org/cabal/index.html#install-upgrade)
-- Then, install the Split package by running the following command
+- [Install Cabal](https://www.haskell.org/cabal/index.html#install-upgrade)
+- Once you have Cabal, install the Split package by running the following command
   ```
     cabal install split
   ```
