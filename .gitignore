@@ -9,6 +9,10 @@
 
 .DS_Store
 *_chat_*.txt
+*analytics_*.txt
 *.hi
 *.o
 *.out
+/testcases
+/input_examples
+/output_examples
