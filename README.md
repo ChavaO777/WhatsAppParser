@@ -1,6 +1,6 @@
 # WhatsAppParser
 
-## Have you ever wanted to know some facts from a chat? WhatsAppParser is for you!
+## Have you ever wanted to know some facts about a chat? WhatsAppParser is for you!
 
 Parse a "_chat.txt" file exported from a WhatsApp chat and get interesting analytics about the conversation.
 
