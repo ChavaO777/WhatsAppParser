@@ -1,3 +1,6 @@
+-- Author Salvador Orozco Villalever - A07104218
+-- Version: 12/03/2018
+
 module Utilities where
 
 import System.Environment

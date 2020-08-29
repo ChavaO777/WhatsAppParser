@@ -1,3 +1,6 @@
+-- Author Salvador Orozco Villalever - A07104218
+-- Version: 12/03/2018
+
 module Parser where
 
 import WhatsAppMessage
@@ -15,8 +18,10 @@ import Data.Time (fromGregorian)
 parseTimeStamp :: String -> LocalTime
 parseTimeStamp message = 
     let
+        -- If the parsing is failing, make sure that the text file of the chat
+        -- does not contain any strange characters (e.g. 'ç', '«', '»').
         timeString = takeWhile(/= ']') message
-        timeFormatString = "%-m/%-d/%y, %-H:%M:%S %p"
+        timeFormatString = "%d/%m/%y %l:%M:%S %p"
     in
         parseTimeOrError True defaultTimeLocale timeFormatString (drop 1 timeString) :: LocalTime
 
